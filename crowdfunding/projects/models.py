@@ -7,6 +7,7 @@ class Project(models.Model):
     description = models.TextField()
     goal = models.IntegerField()
     image = models.URLField()
+    reward = models.TextField(null=True)
     is_open = models.BooleanField()
     date_created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(
@@ -19,6 +20,7 @@ class Pledge(models.Model):
     amount = models.IntegerField()
     comment = models.CharField(max_length=200)
     anonymous = models.BooleanField()
+    accept_reward = models.BooleanField(default=True)
     project = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE,

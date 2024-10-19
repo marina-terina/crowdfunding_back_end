@@ -75,7 +75,9 @@ class PledgeList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = PledgeSerializer(data=request.data)
+        data = request.data.copy()
+        data["supporter"] = request.user.id
+        serializer = PledgeSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -86,6 +88,8 @@ class PledgeList(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+
     
 class PledgeDetail(APIView):
     permission_classes = [
@@ -115,3 +119,9 @@ class PledgeDetail(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+    def delete(self, request, pk):
+        pledge = self.get_object(pk)
+        pledge.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,69 +1,87 @@
 # Crowdfunding Back End
-{{ your name here }}
+KICKAROO
 
 ## Planning:
 ### Concept/Name
-Shiftly - is a platform designed to help employees of large company chains,  easily pick up extra shifts across different store locations. It enables business owners to reduce the need for permanent staff by filling shifts as needed, while offering casual workers the flexibility to accept shifts in various locations that suit their schedules. This creates a win-win solution for both businesses and employees, fostering flexibility and efficiency in managing workforce needs.
+Kickaroo is a crowdfunding platform designed to help people bring their wildest, most unconventional ideas to life. The platform appeals to innovators, artists, and adventurers who are ready to kickstart something crazy and unique. Whether it's a quirky invention, an offbeat project, or a bold business concept, Kickaroo provides a fun, community-driven space for creative minds to share their ideas and fundraise for them. Backers get to support out-of-the-box projects while being an integral part of exciting and unconventional journeys. They will have the chance, for example, to receive exclusive offers, behind-the-scenes access, the opportunity to follow the journey, or early bird perks that allow them to enjoy rewards and products before they are available to the general public.
 
 ### Intended Audience/User Stories
-- Store Managers/Business Owners: post, update, delete shifts (projects), view and reply to comments, and accept/reject pledges. 
+Intended Audience
+- Creative Entrepreneurs: People with unconventional ideas, looking for a fun and engaging way to fund their projects.
+- Artists & Designers: Creatives wanting to showcase offbeat, innovative works, and fund their artistic projects.
+- Adventure Seekers & Experience Creators: Individuals with unique travel or experiential ideas, looking for support from like-minded backers.
+- Startups & Small Businesses: Small businesses with bold, niche products or services that need funding to get off the ground.
+- Community Groups & Local Innovators: Groups or individuals creating quirky, community-focused initiatives who need crowd support.
+- Backers Seeking Unique Projects: Supporters interested in exploring and backing wild, one-of-a-kind ideas.
 
-" As a Store Manager, I want to be able to post, update, and delete shifts (projects), view and reply to comments, and accept or reject pledges,   so that I can efficiently manage shift availability and ensure the right staff are covering the shifts"
+User Stories
 
-- Casual Employees: view available shifts, apply for shifts that suit their preferences and accept or deny shift offers.
+       As a Creator:
+- "I want to share my unconventional project and raise funds to bring my bold idea to life".
+- "I want to set funding goals and deadlines for my project to keep backers informed and engaged".
+- "I want to offer backers the opportunity to be engaged participants in my project, for example, by providing access to a closed channel where they can see exclusive updates, behind-the-scenes content, and early prototypes, so they feel connected to the journey."
+- "I want to provide early bird perks to my backers, allowing them to enjoy rewards and products before they are available to the general public."
 
-"As a Casual Employee, I want to view available shifts, apply for shifts that suit my preferences, and accept or deny shift offers, so that I can have flexibility in choosing work that fits my schedule."
+      As a Backer:
+- "I want to easily browse and discover creative projects so that I can find ideas that excite me."
+- "I want to see clear descriptions and funding goals so I can choose the best projects to back."
+- "I want to make an anonymous pledge, so I can support the creator while maintaining my privacy."
+- "I want to add a comment to accompany the pledge."
+- "I want to receive exclusive updates and insights about the projects I support so that I can feel involved and informed throughout the process."
 
-- All Users need to be logged in to access any functionality on the platform. 
+### Front End Pages/Functionality 
+         1. Home Page functionality:
+- Navbar and Login Button: For easy navigation to key sections and access to user accounts.
+- Overview of Featured Projects: This section is designed to encourages users to explore projects, engage with projects, and back projects. 
+  Each featured project will include: Title, Owner (a user), Description, Image, Target amount, status, timestamp, perks and Button "Kick Me Mate!" 
+- Call-to-Action Buttons for Creators: Prominent buttons "Kickstart Your Idea" inviting creators to start their projects.
 
-"As a user, I want to be required to log in before accessing any functionality on the platform, so that my account and activities are secure and personalized."
-    
+         2. Login/Register Page functionality:
+- User registration form for new users (Fields:Username, Email address, Password).
+- Login form for returning users(Fields: Email address or username, Password).
 
-### Front End Pages/Functionality
-- Home Page: 
-         * Overview of the platform's purpose and benefits for both managers and employees.
-         * NavMenu
-         * Login/Register options for user accounts.
+          3. Project Creation page "Kickstart Your Idea":
+- This page allows users to provide all necessary details to create a project. 
+  Project details includes:
+       *Title
+       *Owner (a user)
+       *Description
+       *Image 
+       *Target amount to fundraise
+       *Status
+       *Timestamp
+       *Perks
 
-- Second Page: 
-         * Comprehensive list of available shifts categorized by location, date, and time.
-         * Shift details including descriptions, requirements, and pay rates.
-         * Call-to-action buttons for managers to post shifts.
+         4. Pledge Creation Page "Kick Me Mate!":
+- This page allows users to make pledges easily.  
+  Pledge details includes:
+        *Amount pledged
+        *Option to make the pledge anonymous or not
+        *A comment to accompany the pledge
+        *Desire to receive a perks (if anonymous - no perks).
+
+        5. User Dashboard: A page for users to view and manage their created projects and pledges.
          
-- Create Shift Page:
-         * Shift Title: Field to enter a clear, descriptive title for the shift.
-         * Description: Text area for providing detailed information about the shift (responsibilities, requirements, etc.).
-         * Location and Store ID: Dropdown or input field to select or enter the shift location.
-         * Date & Time: Date picker and time selection tools to specify when the shift starts and ends.
-         * Pay Rate: Field to enter the compensation offered for the shift.
-         * Max Employees: Option to specify how many employees can pick up the shift.
-         * Additional Notes: Optional text area for any other relevant information.
-
-
-
+          
 ### API Spec
-{{ Fill out the table below to define your endpoints. An example of what this might look like is shown at the bottom of the page. 
-
-It might look messy here in the PDF, but once it's rendered it looks very neat! 
-
-It can be helpful to keep the markdown preview open in VS Code so that you can see what you're typing more easily. }}
-
-| URL       | HTTP Method | Purpose | Purpose             | Request Body | Success Response Code | Authentication/Authorisation |
-| --------- | ----------- | ------- | ------------------- | ------------ | --------------------- | ---------------------------- |
-|           |             |         |                     |              |                       |                              |  
-
-| URL                      | HTTP Method | Purpose                                   | Request                                                | Success Response Code | Authentication/Authorization  |
-|--------------------------|-------------|-------------------------------------------|----------------------------------------------------------------|-----------------------|-------------------------------|
-| `/login`                 | POST        | All users must log in                     | `{ "username": "string", "email": "string", "password": "string" }` | 200                   | N/A (required for all actions) |
-| `/projects`              | POST        | Post a new shift                          | `{ "title": "string", "description": "string", "start_time": "ISO_8601", "end_time": "ISO_8601" }` | 200                   | Manager / Must be logged in    |
-| `/projects/{ID}`         | PUT         | Update a shift                            | `{ "title": "string", "description": "string", "start_time": "ISO_8601", "end_time": "ISO_8601" }` | 200                   | Manager                        |
-| `/projects/{ID}`         | DELETE      | Delete a shift                            | N/A                                                            | 200                   | Manager                        |
-| `/projects`              | GET         | Retrieve a list of available shifts       | N/A                                                            | 200                   | All users                      |
-| `/projects/{ID}`         | GET         | Retrieve details of a specific shift      | N/A                                                            | 200                   | All users                      |
-| `/projects/{id}/pledges` | POST        | Apply for a shift                         | `{ "employee_id": "int", "shift_id": "int" }`                  | 200                   | Employee                       |
-| `/projects/{ID}/Offer`   | POST        | Offer a shift to an employee              | `{ "employee_id": "int", "shift_id": "int" }`                  | 200                   | Manager                        |
-| `/projects/{id}/accept`  | POST        | Accept a shift offer                      | `{ "shift_id": "int", "offer_id": "int" }`                     | 200                   | Employee                       |
-| `/projects/{id}/reject`  | POST        | Reject a shift offer                      | `{ "shift_id": "int", "offer_id": "int" }`                     | 200                   | Employee                       |
+| URL                         | HTTP Method | Purpose                                | Request Body                                                                                                    | Success Response Code | Authentication/Authorization             |
+|-----------------------------|-------------|----------------------------------------|-----------------------------------------------------------------------------------------------------------------|-----------------------|------------------------------------------|
+| /register                   | POST        | Register a new user                    | { "first_name": "string", "last_name": "string", "username": "string", "email": "string", "password": "string" } | 201 Created           | None                                     |
+| /login                      | POST        | Authenticate user                      | { "username_or_email": "string", "password": "string" }                                                          | 200 OK                | None                                     |
+| /projects                   | GET         | Retrieve featured projects             | None                                                                                                            | 200 OK                | None                                     |
+| /projects                   | POST        | Create a new project                   | { "title": "string", "description": "string", "goal": "Integer", "image": "url", "reward": "string", "is_open": "boolean", "owner": "user_id" } | 201 Created           | Must be logged in                        |
+| /projects/id                | GET         | Retrieve project details               | None                                                                                                            | 200 OK                | None                                     |
+| /projects/id                | PUT         | Update project details                 | { "title": "string", "description": "string", "goal": "Integer", "image": "url", "reward": "string", "is_open": "boolean" } | 200 OK                | Must be logged in & owner                |
+| /projects/id                | DELETE      | Delete a project                       | None                                                                                                            | 204 No Content         | Must be logged in & owner                |
+| /user/id                    | PUT         | Update user details                    | { "first_name": "string", "last_name": "string", "username": "string", "email": "string", "password": "string" } | 200 OK                | Must be logged in (update own details)   |
+| /user/projects              | GET         | Retrieve user's own projects           | None                                                                                                            | 200 OK                | Must be logged in & owner (retrieve own) |
+| /user/pledges               | GET         | Retrieve user's own pledges            | None                                                                                                            | 200 OK                | Must be logged in (retrieve own)         |
+| /pledges                    | POST        | Create a pledge for a project          | { "amount": "number", "anonymous": "boolean", "comment": "string", "supporter": "user_id", "accept_reward": "boolean" } | 201 Created           | Must be logged in                        |
+| /pledges                    | GET         | Retrieve all pledges for a project     | None                                                                                                            | 200 OK                | None                                     |
+| /pledges                    | GET         | Retrieve all pledges                   | None                                                                                                            | 200 OK                | Must be logged in                        |
+| /pledges/id                 | PUT         | Update a pledge                        | { "amount": "number", "anonymous": "boolean", "comment": "string", "accept_reward": "boolean" }                  | 200 OK                | Must be logged in & pledge owner         |
+| /pledges/id                 | DELETE      | Delete a pledge                        | None                                                                                                            | 204 No Content         | Must be logged in & pledge owner         |
+| /pledges/user               | GET         | Retrieve all pledges by the user       | None                                                                                                            | 200 OK                | Must be logged in (retrieve own pledges) |
 
 
 ### DB Schema
