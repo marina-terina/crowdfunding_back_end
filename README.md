@@ -66,8 +66,8 @@ User Stories
 ### API Spec
 | URL                         | HTTP Method | Purpose                                | Request Body                                                                                                    | Success Response Code | Authentication/Authorization             |
 |-----------------------------|-------------|----------------------------------------|-----------------------------------------------------------------------------------------------------------------|-----------------------|------------------------------------------|
-| /register                   | POST        | Register a new user                    | { "first_name": "string", "last_name": "string", "username": "string", "email": "string", "password": "string" } | 201 Created           | None                                     |
-| /login                      | POST        | Authenticate user                      | { "username_or_email": "string", "password": "string" }                                                          | 200 OK                | None                                     |
+| /users                   | POST        | Register a new user                    | { "first_name": "string", "last_name": "string", "username": "string", "email": "string", "password": "string" } | 201 Created           | None                                     |
+| /api-token-auth/                      | POST        | Authenticate user                      | { "username_or_email": "string", "password": "string" }                                                          | 200 OK                | None                                     |
 | /projects                   | GET         | Retrieve featured projects             | None                                                                                                            | 200 OK                | None                                     |
 | /projects                   | POST        | Create a new project                   | { "title": "string", "description": "string", "goal": "Integer", "image": "url", "reward": "string", "is_open": "boolean", "owner": "user_id" } | 201 Created           | Must be logged in                        |
 | /projects/id                | GET         | Retrieve project details               | None                                                                                                            | 200 OK                | None                                     |
@@ -82,7 +82,7 @@ User Stories
 | /pledges/id                 | PUT         | Update a pledge                        | { "amount": "number", "anonymous": "boolean", "comment": "string", "accept_reward": "boolean" }                  | 200 OK                | Must be logged in & pledge owner         |
 | /pledges/id                 | DELETE      | Delete a pledge                        | None                                                                                                            | 204 No Content         | Must be logged in & pledge owner         |
 | /pledges/user               | GET         | Retrieve all pledges by the user       | None                                                                                                            | 200 OK                | Must be logged in (retrieve own pledges) |
-
+| /users/id/             | DELETE      | Delete a user                     | None                                                                                                   | 204 No Content        | Must be logged in & owner                            |
 
 ### DB Schema
 ![]( {{ ./relative/path/to/your/schema/image.png }} )

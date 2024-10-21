@@ -5,11 +5,15 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import CustomUser
 from .serializers import CustomUserSerializer
+from projects.models import Project, Pledge
+from projects.models import Project
+from projects.serializers import ProjectSerializer, PledgeSerializer 
+from projects.permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
 
 class CustomUserList(APIView):
     def get(self, request):
@@ -42,6 +46,19 @@ class CustomUserDetail(APIView):
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
     
+    def put(self, request, pk):
+        user = self.get_object(pk)
+        serializer = CustomUserSerializer(user, data=request.data)  
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        user = self.get_object(pk)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(
@@ -57,3 +74,25 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.id,
             'email': user.email
         })
+    
+class UserProjects(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, pk):
+        # Filter projects by the user ID (owner)
+        projects = Project.objects.filter(owner=pk)  
+        
+        # Check if the user has any projects
+        if not projects.exists():
+            return Response({'detail': 'No projects found for this user.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# New class to get user's pledges
+class UserPledges(APIView):
+    def get(self, request, pk):
+        # pledges = pledges.objects.filter(supporter=pk)  # Assuming 'supporter' is a ForeignKey to CustomUser
+        pledges = Pledge.objects.filter(supporter=pk)
+        serializer = PledgeSerializer(pledges, many=True)
+        return Response(serializer.data)
