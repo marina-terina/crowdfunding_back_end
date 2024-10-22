@@ -1,7 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
-
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -57,6 +55,7 @@ class CustomUserDetail(APIView):
     def delete(self, request, pk):
         user = self.get_object(pk)
         user.delete()
+        
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class CustomAuthToken(ObtainAuthToken):
@@ -68,7 +67,7 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-
+        
         return Response({
             'token': token.key,
             'user_id': user.id,
@@ -79,20 +78,14 @@ class UserProjects(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, pk):
-        # Filter projects by the user ID (owner)
         projects = Project.objects.filter(owner=pk)  
-        
-        # Check if the user has any projects
         if not projects.exists():
             return Response({'detail': 'No projects found for this user.'}, status=status.HTTP_404_NOT_FOUND)
-
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-# New class to get user's pledges
 class UserPledges(APIView):
     def get(self, request, pk):
-        # pledges = pledges.objects.filter(supporter=pk)  # Assuming 'supporter' is a ForeignKey to CustomUser
         pledges = Pledge.objects.filter(supporter=pk)
         serializer = PledgeSerializer(pledges, many=True)
         return Response(serializer.data)
