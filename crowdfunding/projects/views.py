@@ -82,8 +82,16 @@ class PledgeList(APIView):
     def post(self, request):
         data = request.data.copy()
         data["supporter"] = request.user.id
+    
+
         serializer = PledgeSerializer(data=data)
         if serializer.is_valid():
+            project_id = serializer.validated_data["project"].id 
+            project = Project.objects.get(id=project_id)
+            if project.is_open is False: 
+                return Response({"detail": "Not allowed to pledge to the closed project"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             serializer.save()
             return Response(
                 serializer.data,

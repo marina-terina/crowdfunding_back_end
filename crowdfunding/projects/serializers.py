@@ -1,10 +1,17 @@
 from rest_framework import serializers
 from .models import Project, Pledge
+from django.core.exceptions import ValidationError
 
 class PledgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pledge
         fields = '__all__'
+
+    # def validate(self, instance data):
+    #     project = data.get('project', self.instance.project)
+    #     if not project.is_open:
+    #         raise ValidationError("This project is closed. Pledges cannot be updated.")
+    #     return data
 
     def update(self, instance, validated_data):
         instance.amount = validated_data.get('amount', instance.amount)
