@@ -11,9 +11,10 @@ from .serializers import CustomUserSerializer
 from projects.models import Project, Pledge
 from projects.models import Project
 from projects.serializers import ProjectSerializer, PledgeSerializer 
-from projects.permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
+from projects.permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly, IsSuperhero
 
 class CustomUserList(APIView):
+    permission_classes = [IsSuperhero]  # Apply the superhero permission
     def get(self, request):
         users = CustomUser.objects.all()
         serializer = CustomUserSerializer(users, many=True)
@@ -33,6 +34,7 @@ class CustomUserList(APIView):
         )
 
 class CustomUserDetail(APIView):
+    permission_classes = [permissions.IsAuthenticated]  
     def get_object(self, pk):
         try:
             return CustomUser.objects.get(pk=pk)
@@ -41,6 +43,8 @@ class CustomUserDetail(APIView):
 
     def get(self, request, pk):
         user = self.get_object(pk)
+        if user != request.user:
+            return Response({'detail': 'You do not have permission to view this user.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
     
