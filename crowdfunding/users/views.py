@@ -48,16 +48,22 @@ class CustomUserDetail(APIView):
             return CustomUser.objects.get(pk=pk)
         except CustomUser.DoesNotExist:
             raise Http404
+        
+    def check_ownership(self, user):
+        return user == self.request.user
 
     def get(self, request, pk):
         user = self.get_object(pk)
-        if user != request.user:
+        #if user != request.user:
+        if not self.check_ownership(user):
             return Response({'detail': 'You do not have permission to view this user.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
     
     def put(self, request, pk):
         user = self.get_object(pk)
+        if not self.check_ownership(user):
+            return Response({'detail': 'You do not have permission to update this user.'}, status=status.HTTP_403_FORBIDDEN)
         serializer = CustomUserSerializer(user, data=request.data)  
         if serializer.is_valid():
             serializer.save()
@@ -66,6 +72,8 @@ class CustomUserDetail(APIView):
 
     def delete(self, request, pk):
         user = self.get_object(pk)
+        if not self.check_ownership(user):
+            return Response({'detail': 'You do not have permission to delete this user.'}, status=status.HTTP_403_FORBIDDEN)
         user.delete()
         
         return Response(status=status.HTTP_204_NO_CONTENT)
