@@ -11,10 +11,18 @@ from .serializers import CustomUserSerializer
 from projects.models import Project, Pledge
 from projects.models import Project
 from projects.serializers import ProjectSerializer, PledgeSerializer 
-from projects.permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly, IsSuperhero
+from projects.permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly, IsSuperuser
 
 class CustomUserList(APIView):
-    permission_classes = [IsSuperhero]  # Apply the superhero permission
+    #permission_classes = [IsSuperuser]  # Apply the superhero permission
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return []  # Allow any user for POST requests
+        elif self.request.method == 'GET':
+            return [IsSuperuser()]  # Require IsSuperuser permission for GET requests
+        return super().get_permissions()  # For other methods, use the default behavior
+    
     def get(self, request):
         users = CustomUser.objects.all()
         serializer = CustomUserSerializer(users, many=True)
