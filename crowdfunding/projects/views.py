@@ -79,10 +79,9 @@ class PledgeList(APIView):
         serializer = PledgeSerializer(pledges, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, pk):
         data = request.data.copy()
         data["supporter"] = request.user.id
-    
 
         serializer = PledgeSerializer(data=data)
         if serializer.is_valid():
