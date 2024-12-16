@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,7 +6,7 @@ from rest_framework import status, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, PublicUserSerializer
 from projects.models import Project, Pledge
 from projects.models import Project
 from projects.serializers import ProjectSerializer, PledgeSerializer 
@@ -93,6 +92,18 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.id,
             'email': user.email
         })
+    
+class PublicUserDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        user = self.get_object(pk)
+        serializer = PublicUserSerializer(user)  # Use the new serializer
+        return Response(serializer.data)
     
 class UserProjects(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

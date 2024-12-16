@@ -26,3 +26,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         # Save the updated instance
         instance.save()
         return instance
+    
+class PublicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username']

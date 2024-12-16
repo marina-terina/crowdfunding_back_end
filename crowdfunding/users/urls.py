@@ -6,4 +6,5 @@ urlpatterns = [
     path('users/<int:pk>/', views.CustomUserDetail.as_view()),
     path('users/<int:pk>/projects/', views.UserProjects.as_view()),  
     path('users/<int:pk>/pledges/', views.UserPledges.as_view()), 
+     path('users/public/<int:pk>/', views.PublicUserDetail.as_view(), name='public-user-detail'),
     ]
